@@ -9,6 +9,7 @@
 #include "Global.h"
 #include "ObjectManager.h"
 
+class QLabel;
 class QComboBox;
 class QListWidget;
 
@@ -48,6 +49,7 @@ private:
   QListWidget *imgList, *objList;
   ImageWidget *imgView;
   QComboBox *zoomBox;
+  QLabel *objectsLbl, *filesLbl;
 };
 
 B_END_NAMESPACE

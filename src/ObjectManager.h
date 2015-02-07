@@ -24,6 +24,7 @@ public:
   bool hasObjects() const { return !objects.isEmpty(); }
   const QMap<QString, QList<QRect> > &getObjects() const { return objects; }
   QList<QRect> getObjects(const QString &file) const;
+  int getObjectsCount() const;
 
   QString determineFolder(QString &subDir) const;
   void setFolder(const QString &folder);

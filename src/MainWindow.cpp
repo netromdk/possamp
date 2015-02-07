@@ -6,6 +6,7 @@
 #include <QMenuBar>
 #include <QKeyEvent>
 #include <QComboBox>
+#include <QStatusBar>
 #include <QScrollArea>
 #include <QMessageBox>
 #include <QVBoxLayout>
@@ -135,6 +136,11 @@ void MainWindow::setupLayout() {
   connect(zoomBox, SIGNAL(currentIndexChanged(int)),
           this, SLOT(onZoomChanged(int)));
 
+  objectsLbl = new QLabel;
+  filesLbl = new QLabel;
+  statusBar()->addPermanentWidget(objectsLbl);
+  statusBar()->addPermanentWidget(filesLbl);
+
   QVBoxLayout *listLayout = new QVBoxLayout;
   listLayout->addWidget(new QLabel(tr("Images")));
   listLayout->addWidget(imgList);
@@ -232,7 +238,9 @@ void MainWindow::loadItems() {
     else {
       imgList->addItem(QString("%1/%2").arg(samplesSub).arg(file));
     }
-  }  
+  }
+
+  filesLbl->setText(tr("%1 files").arg(imgList->count()));
 }
 
 void MainWindow::loadObjects(const QString &file) {
@@ -243,6 +251,9 @@ void MainWindow::loadObjects(const QString &file) {
     itm->setData(Qt::UserRole, obj);
     objList->addItem(itm);
   }
+
+  objectsLbl->setText(tr("%1/%2 objects")
+                      .arg(objList->count()).arg(objMgr->getObjectsCount()));
 }
 
 void MainWindow::loadImage(const QString &path) {

@@ -111,6 +111,14 @@ QList<QRect> ObjectManager::getObjects(const QString &file) const {
   return objects[file];
 }
 
+int ObjectManager::getObjectsCount() const {
+  int amount = 0;
+  foreach (const auto &list, objects.values()) {
+    amount += list.size();
+  }
+  return amount;
+}
+
 QString ObjectManager::determineFolder(QString &subDir) const {
   if (!hasObjects()) return QString();
   QList<QString> flds;
