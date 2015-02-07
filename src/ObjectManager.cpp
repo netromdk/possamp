@@ -63,7 +63,11 @@ bool ObjectManager::load() {
       rects << QRect(data[0], data[1], data[2], data[3]);
     }
 
-    objects[items[0]] = rects;
+    QString path = items[0];
+    if (!overrideFolder.isEmpty()) {
+      path = QDir(overrideFolder).absoluteFilePath(path);
+    }
+    objects[path] = rects;
   }
   
   return true;
@@ -126,6 +130,10 @@ QString ObjectManager::determineFolder(QString &subDir) const {
     return fileDir.absolutePath();
   }
   return fileDir.absoluteFilePath(root);
+}
+
+void ObjectManager::setFolder(const QString &folder) {
+  overrideFolder = folder;
 }
 
 B_END_NAMESPACE

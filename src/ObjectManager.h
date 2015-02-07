@@ -26,9 +26,10 @@ public:
   QList<QRect> getObjects(const QString &file) const;
 
   QString determineFolder(QString &subDir) const;
+  void setFolder(const QString &folder);
 
 private:
-  QString file;
+  QString file, overrideFolder;
   QMap<QString, QList<QRect> > objects;
 };
 

@@ -56,7 +56,13 @@ void MainWindow::onImageSelected() {
   curFile = itm->text();
   loadObjects(curFile);
 
-  QString path = QDir(root).absoluteFilePath(curFile);
+  QString path;
+  if (root == samplesRoot) {
+    path = curFile;
+  }
+  else {
+    path = QDir(root).absoluteFilePath(curFile);
+  }
   loadImage(path);
 }
 
@@ -195,21 +201,19 @@ void MainWindow::askForFiles() {
     }
 
     qDebug() << "RESULTS:" << objMgr->getObjects();
+    root = objMgr->determineFolder(samplesSub);
+    samplesRoot = QDir(root).absoluteFilePath(samplesSub);
   }
-
-  root = objMgr->determineFolder(samplesSub);
-  samplesRoot = QDir(root).absoluteFilePath(samplesSub);
-    
-  if (samplesRoot.isEmpty()) {
-    samplesRoot =
+  else {
+    root = samplesRoot =
       QFileDialog::getExistingDirectory(this, tr("Choose samples image root"),
                                         QDir::homePath());
     if (samplesRoot.isEmpty()) {
       QApplication::quit();
       return;
     }
+    objMgr->setFolder(root);
   }
-  qDebug() << "SAMPLES ROOT FOLDER:" << samplesRoot;
 
   loadItems();
 }
@@ -219,7 +223,10 @@ void MainWindow::loadItems() {
   objList->clear();
 
   foreach (const QString &file, Util::getImages(samplesRoot)) {
-    if (samplesSub.isEmpty()) {
+    if (samplesRoot == root) {
+      imgList->addItem(QString("%1/%2").arg(root).arg(file));
+    }
+    else if (samplesSub.isEmpty()) {
       imgList->addItem(file);
     }
     else {
